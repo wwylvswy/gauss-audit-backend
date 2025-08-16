@@ -8,6 +8,7 @@ import com.icbc.audit.assit.vo.ApiResponse;
 import com.icbc.audit.assit.vo.FileProcessResult;
 import com.icbc.audit.assit.vo.ReviewRequest;
 import com.icbc.audit.assit.vo.ReviewResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,11 @@ public class ReviewController {
     }
 
     @PostMapping("/ddl")
+    @Operation(
+        summary = "审核 DDL 语句",
+        description = "接收 DDL SQL 语句进行审核，并返回审核结果。",
+        tags = {"DDL 审核"}
+    )
     public ResponseEntity<ApiResponse<ReviewResponse>> reviewDdl(@RequestBody ReviewRequest request) {
         log.info("接收到 DDL 审核请求...");
         log.info("请求内容 SQL: {}", request.getSqlText());
@@ -47,6 +53,11 @@ public class ReviewController {
     }
 
     @PostMapping("/ddl/from-file")
+    @Operation(
+        summary = "从文件审核 DDL",
+        description = "接收上传的 DDL 文件，提取 SQL 内容并进行审核。",
+        tags = {"DDL 文件审核"}
+    )
     public ResponseEntity<ApiResponse<?>> reviewDdlFromFile(@RequestParam("file") MultipartFile file) {
         log.info("接收到 DDL 文件上传审核请求: {}", file.getOriginalFilename());
 
@@ -86,6 +97,11 @@ public class ReviewController {
 
 
     @PostMapping("/dml")
+    @Operation(
+        summary = "审核 DML 语句",
+        description = "接收 DML SQL 语句进行审核，并返回审核结果。",
+        tags = {"DML 审核"}
+    )
     public ResponseEntity<ApiResponse<ReviewResponse>> reviewDml(@RequestBody ReviewRequest request) {
         // ... DML 审核逻辑保持不变
         log.info("接收到 DML 审核请求...");
