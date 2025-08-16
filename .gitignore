@@ -1,5 +1,4 @@
 HELP.md
-target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -18,6 +17,9 @@ target/
 *.iws
 *.iml
 *.ipr
+out/
+target/
+!target/*.war
 
 ### NetBeans ###
 /nbproject/private/
@@ -31,3 +33,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Maven
+log/
+logs/
+*.log
+.mvn/
+
+# Gradle
+.gradle/
+
+# OS
+.DS_Store
+Thumbs.db
