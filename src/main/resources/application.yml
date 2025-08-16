@@ -1,0 +1,45 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://175.178.89.189:3306/gauss_audit?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: 111222
+  data:
+    redis:
+      host: 175.178.89.189
+      port: 6379
+#      database: 0
+      timeout: 2000
+  cache:
+    type: redis
+  ai:
+    deepseek:
+      # api-key: "sk-3c40c0de091f40aa92d6213dd308c966"  # 替换为你的 OpenAI API 密钥
+      api-key: "sk-3f6dc1f25d0443caa6f14ef0ec9bce6c"  # 替换为你的 OpenAI API 密钥
+      #      base-url: "https://api.deepseek.com/v1"    # 默认值，通常无需修改/
+      chat:
+        options:
+          model: "deepseek-chat"                # 默认模型
+          temperature: 0.8                       # 生成文本的随机性控制
+          max-tokens: 1000
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+mybatis-plus:
+  mapperPackage: com.waves.**.mapper
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+  global-config:
+    db-config:
+      id-type: auto
+      table-prefix: t_
