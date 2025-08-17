@@ -33,6 +33,15 @@ public class UserDTO implements Serializable {
     @Schema(description = "是否启用")
     private Boolean enabled;
 
+    @Schema(description = "创建时间")
+    private String createTime;
+
+    @Schema(description = "昵称")
+    private String nickname;
+
+    @Schema(description = "头像URL")
+    private String avatar;
+
     // 查询条件专用字段
     @Schema(description = "分页页码，默认1")
     private Integer pageNo = 1;

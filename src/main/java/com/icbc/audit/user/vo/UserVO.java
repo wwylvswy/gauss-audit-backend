@@ -14,5 +14,7 @@ public class UserVO {
     private String email;
     private String creator;
     private LocalDateTime createTime;
+    private String nickname;
+    private String avatar;
     private Boolean enabled;
 }

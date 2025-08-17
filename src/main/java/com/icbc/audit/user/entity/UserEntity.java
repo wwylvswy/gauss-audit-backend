@@ -46,6 +46,10 @@ public class UserEntity implements Serializable {
     /** 修改时间 */
     private LocalDateTime updateTime;
 
+    private String nickname;
+
+    private String avatar;
+
     @TableLogic(value = "0", delval = "1")
     private Integer deleted;
 }

@@ -1,11 +1,7 @@
 package com.icbc.audit.assit.vo;
 
 import lombok.Data;
-
-/**
- * 对应文档 5.4.2 (表5-5) 的 API接口响应数据字段
- * 用于标准化所有后端API的返回格式
- */
+// 对应文档 5.4.2 (表5-5) 的 API接口响应数据字段 用于标准化所有后端API的返回格式
 @Data
 public class ApiResponse<T> {
 
@@ -27,3 +23,4 @@ public class ApiResponse<T> {
         return new ApiResponse<>(code, message, null);
     }
 }
+

@@ -1,10 +1,13 @@
 package com.icbc.audit.user.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.icbc.audit.user.dao.LoginDTO;
 import com.icbc.audit.user.dao.UserDTO;
 import com.icbc.audit.user.service.UserService;
+import com.icbc.audit.user.vo.UserLoginVO;
 import com.icbc.audit.user.vo.UserVO;
 import com.icbc.audit.web.ApiResponse;
+import com.icbc.audit.web.NewApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,19 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+
+    @PostMapping("/login")
+    @Operation(
+            summary = "用户登录",
+            description = "使用账号和密码进行用户登录",
+            tags = {"用户管理"}
+    )
+    public NewApiResponse<UserLoginVO> login(@RequestBody LoginDTO loginDTO) {
+        System.out.println("LoginDTO: " + loginDTO.getAccount() + " " + loginDTO.getPassword());
+        UserLoginVO data = userService.login(loginDTO);
+
+        return NewApiResponse.ok(data);
+    }
 
     @Operation(
             summary = "分页获取用户",           //

@@ -17,9 +17,9 @@ import com.icbc.audit.input.entity.SqlInputEntity;
 import com.icbc.audit.input.exception.ErrorCode;
 import com.icbc.audit.input.exception.SqlParseException;
 import com.icbc.audit.input.service.InputProcessingService;
-import com.icbc.audit.input.util.FileProcessor;
+import com.icbc.audit.input.util.InputFileProcessor;
 import com.icbc.audit.input.util.GaussDbConnector;
-import com.icbc.audit.input.util.GaussSqlParser;
+import com.icbc.audit.input.util.InputGaussSqlParser;
 import com.icbc.audit.input.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class InputProcessingServiceImpl implements InputProcessingService {
 
     @Autowired
-    private GaussSqlParser sqlParser;
+    private InputGaussSqlParser sqlParser;
 
     @Autowired
-    private FileProcessor fileProcessor;
+    private InputFileProcessor inputFileProcessor;
 
     private final GaussDbConnector dbConnector = new GaussDbConnector();
 
@@ -55,7 +55,7 @@ public class InputProcessingServiceImpl implements InputProcessingService {
 
     @Override
     public FileProcessResult processFileUpload(MultipartFile file) {
-        return fileProcessor.process(file);
+        return inputFileProcessor.process(file);
     }
 
     @Override
