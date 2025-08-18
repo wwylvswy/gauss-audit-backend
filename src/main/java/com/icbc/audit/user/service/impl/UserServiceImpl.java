@@ -4,13 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.icbc.audit.user.dao.LoginDTO;
+import com.icbc.audit.user.dao.RefreshDTO;
 import com.icbc.audit.user.dao.UserDTO;
+import com.icbc.audit.user.dao.UserPostDTO;
 import com.icbc.audit.user.entity.UserEntity;
 import com.icbc.audit.user.mapper.UserMapper;
 import com.icbc.audit.user.service.UserService;
+import com.icbc.audit.user.vo.RefreshTokenVO;
 import com.icbc.audit.user.vo.UserLoginVO;
 import com.icbc.audit.user.vo.UserVO;
 import com.icbc.audit.util.JwtUtil;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
         // 过期时间
 //        System.out.println("Expires in 1 hour for account: " + account);
-        LocalDateTime expireTime = LocalDateTime.now().plusSeconds(3600);
+        LocalDateTime expireTime = LocalDateTime.now().plusSeconds(36000);
 
 //        System.out.println("Expire time: " + expireTime);
         String expires = expireTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
@@ -97,6 +101,42 @@ public class UserServiceImpl implements UserService {
         vo.setRefreshToken(refreshToken);
         vo.setExpires(expires);
 
+        return vo;
+    }
+
+    @Override
+    public RefreshTokenVO refreshToken(RefreshDTO refreshDTO) {
+        String refreshToken = refreshDTO.getRefreshToken();
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            throw new RuntimeException("refreshToken不能为空");
+        }
+        Claims claims;
+        try {
+            claims = jwtUtil.getClaimsFromToken(refreshToken);
+        } catch (Exception e) {
+            throw new RuntimeException("refreshToken无效或已过期");
+        }
+        String account = claims.getSubject();
+        LambdaQueryWrapper<UserEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserEntity::getAccount, account).eq(UserEntity::getEnabled, 1);
+        UserEntity user = userMapper.selectOne(wrapper);
+        if (user == null) {
+            throw new RuntimeException("用户不存在或未启用");
+        }
+        List<String> roles = userMapper.selectRolesByAccount(account);
+        List<String> permissions = roles.contains("admin") ? allPermissions : commonPermissions;
+        Map<String, Object> accessClaims = new HashMap<>();
+        accessClaims.put("account", account);
+        accessClaims.put("roles", roles);
+        accessClaims.put("permissions", permissions);
+        String newAccessToken = jwtUtil.generateAccessToken(accessClaims);
+        String newRefreshToken = jwtUtil.generateRefreshToken(account);
+        LocalDateTime expireTime = LocalDateTime.now().plusSeconds(36000);
+        String expires = expireTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+        RefreshTokenVO vo = new RefreshTokenVO();
+        vo.setAccessToken(newAccessToken);
+        vo.setRefreshToken(newRefreshToken);
+        vo.setExpires(expires);
         return vo;
     }
 
@@ -133,7 +173,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addUser(UserDTO dto) {
+    public void addUser(UserPostDTO dto) {
         UserEntity user = new UserEntity();
         BeanUtils.copyProperties(dto, user);
         userMapper.insert(user);
@@ -141,9 +181,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateUser(UserDTO dto) {
+    public void updateUser(UserPostDTO userPostDTO) {
         UserEntity user = new UserEntity();
-        BeanUtils.copyProperties(dto, user);
+        BeanUtils.copyProperties(userPostDTO, user);
         userMapper.updateById(user);
     }
 

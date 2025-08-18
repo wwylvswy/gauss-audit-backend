@@ -21,7 +21,7 @@ spring:
   ai.openai:
     # api-key: "sk-3c40c0de091f40aa92d6213dd308c966"  # 替换为你的 OpenAI API 密钥
     api-key: "sk-3f6dc1f25d0443caa6f14ef0ec9bce6c"  # 替换为你的 OpenAI API 密钥
-    #      base-url: "https://api.deepseek.com/v1"    # 默认值，通常无需修改/
+    base-url: "https://api.deepseek.com"    # 默认值，通常无需修改/
     chat:
       options:
         model: "deepseek-chat"                # 默认模型

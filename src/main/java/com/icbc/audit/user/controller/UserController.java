@@ -2,8 +2,11 @@ package com.icbc.audit.user.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.icbc.audit.user.dao.LoginDTO;
+import com.icbc.audit.user.dao.RefreshDTO;
 import com.icbc.audit.user.dao.UserDTO;
+import com.icbc.audit.user.dao.UserPostDTO;
 import com.icbc.audit.user.service.UserService;
+import com.icbc.audit.user.vo.RefreshTokenVO;
 import com.icbc.audit.user.vo.UserLoginVO;
 import com.icbc.audit.user.vo.UserVO;
 import com.icbc.audit.web.ApiResponse;
@@ -26,10 +29,20 @@ public class UserController {
             tags = {"用户管理"}
     )
     public NewApiResponse<UserLoginVO> login(@RequestBody LoginDTO loginDTO) {
-        System.out.println("LoginDTO: " + loginDTO.getAccount() + " " + loginDTO.getPassword());
-        UserLoginVO data = userService.login(loginDTO);
+        UserLoginVO userLoginVO = userService.login(loginDTO);
+        return NewApiResponse.ok(userLoginVO);
+    }
 
-        return NewApiResponse.ok(data);
+
+    @PostMapping("/refresh-token")
+    @Operation(
+            summary = "刷新令牌",
+            description = "使用旧的令牌刷新新的令牌",
+            tags = {"用户管理"}
+    )
+    public NewApiResponse<RefreshTokenVO> refreshToken(@RequestBody RefreshDTO refreshDTO) {
+        RefreshTokenVO refreshTokenVO = userService.refreshToken(refreshDTO);
+        return NewApiResponse.ok(refreshTokenVO);
     }
 
     @Operation(
@@ -38,7 +51,7 @@ public class UserController {
             tags = {"用户管理"}               // 分组标签
     )
     @GetMapping("/list")
-    public ApiResponse<IPage<UserVO>> listUsers(UserDTO dto) {
+    public ApiResponse<IPage<UserVO>> listUsers(@ModelAttribute UserDTO dto) {
         return ApiResponse.ok(userService.listUsers(dto));
     }
 
@@ -58,8 +71,8 @@ public class UserController {
             description = "添加一个新的用户",
             tags = {"用户管理"}
     )
-    public ApiResponse<Void> addUser(@RequestBody UserDTO dto) {
-        userService.addUser(dto);
+    public ApiResponse<Void> addUser(@RequestBody UserPostDTO userPostDTO) {
+        userService.addUser(userPostDTO);
         return ApiResponse.ok();
     }
 
@@ -69,9 +82,9 @@ public class UserController {
             description = "根据用户ID更新用户信息",
             tags = {"用户管理"}
     )
-    public ApiResponse<Void> updateUser(@PathVariable Long id, @RequestBody UserDTO dto) {
-        dto.setId(id);
-        userService.updateUser(dto);
+    public ApiResponse<Void> updateUser(@PathVariable Long id, @RequestBody UserPostDTO userPostDTO) {
+        userPostDTO.setId(id);
+        userService.updateUser(userPostDTO);
         return ApiResponse.ok();
     }
 
