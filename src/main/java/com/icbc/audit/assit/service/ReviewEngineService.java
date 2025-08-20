@@ -39,7 +39,8 @@ public class ReviewEngineService {
         log.info("DDL 服务层: 接收到评审任务...");
         try {
             log.info("DDL 服务层: 步骤 1/4 - 开始解析SQL为结构化对象...");
-            SchemaDTO schema = sqlParser.parse(sqlText); // 【重要】调用新解析器
+            // 【重要】调用新解析器
+            SchemaDTO schema = sqlParser.parse(sqlText);
             log.info("DDL 服务层: SQL解析成功, 表名: {}", schema.getTableName());
 
             log.info("DDL 服务层: 步骤 2/4 - 加载评审规则...");

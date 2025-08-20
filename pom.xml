@@ -260,6 +260,17 @@
             <version>1.0.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.opengauss</groupId>
+            <artifactId>opengauss-jdbc</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.calcite</groupId>
+            <artifactId>calcite-core</artifactId>
+            <version>1.37.0</version> <!-- 最新稳定版 -->
+        </dependency>
+
     </dependencies>
 
 
