@@ -46,7 +46,7 @@ public class OpenGaussUtil {
      */
     public static List<String> getDatabases(Connection conn) throws SQLException {
         List<String> databases = new ArrayList<>();
-        String sql = "SELECT datname FROM pg_database WHERE datistemplate = false AND datname NOT IN ('omm');";
+        String sql = "SELECT DISTINCT datname FROM pg_database WHERE datistemplate = false AND datname NOT IN ('omm');";
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {

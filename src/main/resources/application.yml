@@ -49,3 +49,10 @@ jwt:
   refresh-token-expire: 604800000
 
 #debug: true
+
+# 请求本地局域网下的规则服务
+knowledge:
+  base:
+    remote-url: http://192.168.135.150:8080
+  get-ddl-rules: /v2/openApi/getRules/DDL
+
