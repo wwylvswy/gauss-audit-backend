@@ -1,4 +1,4 @@
-package com.icbc.opengauss.util;
+package com.icbc.audit.ogdl.util;
 import com.icbc.audit.ogdl.model.entity.OgDataSourceEntity;
 import lombok.extern.slf4j.Slf4j;
 

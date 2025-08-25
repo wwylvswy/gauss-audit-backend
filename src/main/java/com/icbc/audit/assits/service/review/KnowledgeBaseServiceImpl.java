@@ -29,17 +29,14 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
 
     private String knowledgeGetDml = "/v2/openApi/getRules/DML";
 
-    private final WebClient.Builder webClientBuilder;
-
     private final WebClient webClient = WebClient.builder()
             .baseUrl(knowledgeBaseUrl)
             .build();
 
 
-
     @Override
     public List<String> getBusinessRuleCategories() {
-        // 根据实际情况返回固定分类或动态从远程接口获取
+        // TODO 实际应从知识库管理远程接口获取
         List<String> ans = new ArrayList<>();
         ans.add("合规管理");
         ans.add("基础规则");

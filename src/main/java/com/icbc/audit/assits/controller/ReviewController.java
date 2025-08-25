@@ -57,11 +57,18 @@ public class ReviewController {
         }
     }
 
+
+    @Operation(
+            summary = "普通用户DDL文件上传审核",
+            description = "通过上传文件的方式审核普通用户提交的DDL语句，返回审核结果。"
+    )
     @PostMapping("/common/ddl/from-file")
     public ResponseEntity<ApiResponse<?>> reviewUserDdlFromFile(@RequestParam("file") MultipartFile file) {
         log.info("接收到【用户 DDL】文件上传审核请求: {}", file.getOriginalFilename());
         return handleDdlFileUpload(file, "latest", false);
     }
+
+
     @Operation(
             summary = "管理员DDL审核",
             description = "审核管理员提交的DDL语句，返回审核结果。"
@@ -77,6 +84,10 @@ public class ReviewController {
         }
     }
 
+    @Operation(
+            summary = "管理员DDL文件上传审核",
+            description = "通过上传文件的方式审核管理员提交的DDL语句，返回审核结果。"
+    )
     @PostMapping("/admin/ddl/from-file")
     public ResponseEntity<ApiResponse<?>> reviewAdminDdlFromFile(@RequestParam("file") MultipartFile file, @RequestParam(value = "version", required = false) String version) {
         log.info("接收到【管理员 DDL】文件上传审核请求: {}, 版本: {}", file.getOriginalFilename(), version);
@@ -98,11 +109,16 @@ public class ReviewController {
         }
     }
 
+    @Operation(
+            summary = "普通用户DML文件上传审核",
+            description = "通过上传文件的方式审核普通用户提交的DML语句，返回审核结果。"
+    )
     @PostMapping("/common/dml/from-file")
     public ResponseEntity<ApiResponse<?>> reviewUserDmlFromFile(@RequestParam("file") MultipartFile file) {
         log.info("接收到【用户 DML】文件上传审核请求: {}", file.getOriginalFilename());
         return handleDmlFileUpload(file, "latest", false);
     }
+
 
     @Operation(
             summary = "管理员DML审核",
@@ -119,6 +135,10 @@ public class ReviewController {
         }
     }
 
+    @Operation(
+            summary = "管理员DML文件上传审核",
+            description = "通过上传文件的方式审核管理员提交的DML语句，返回审核结果。"
+    )
     @PostMapping("/admin/dml/from-file")
     public ResponseEntity<ApiResponse<?>> reviewAdminDmlFromFile(@RequestParam("file") MultipartFile file, @RequestParam(value = "version", required = false) String version) {
         log.info("接收到【管理员 DML】文件上传审核请求: {}, 版本: {}", file.getOriginalFilename(), version);

@@ -10,17 +10,8 @@ spring:
     url: jdbc:mysql://175.178.89.189:3306/gauss_audit?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
     password: 111222
-  data:
-    redis:
-      host: 175.178.89.189
-      port: 6379
-#      database: 0
-      timeout: 2000
-  cache:
-    type: redis
   ai.openai:
-    # api-key: "sk-3c40c0de091f40aa92d6213dd308c966"  # 替换为你的 OpenAI API 密钥
-    api-key: "sk-3f6dc1f25d0443caa6f14ef0ec9bce6c"  # 替换为你的 OpenAI API 密钥
+    api-key: "替换为你的 OpenAI API 密钥"
     base-url: "https://api.deepseek.com"    # 默认值，通常无需修改/
     chat:
       options:
@@ -48,11 +39,9 @@ jwt:
   access-token-expire: 3600000
   refresh-token-expire: 604800000
 
-#debug: true
-
-# 请求本地局域网下的规则服务
-knowledge:
-  base:
-    remote-url: http://192.168.135.150:8080
-  get-ddl-rules: /v2/openApi/getRules/DDL
+# 请求本地局域网下的规则知识库服务
+#knowledge:
+#  base:
+#    remote-url: http://192.168.135.150:8080
+#  get-ddl-rules: /v2/openApi/getRules/DDL
 
